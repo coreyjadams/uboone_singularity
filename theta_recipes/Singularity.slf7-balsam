@@ -1,0 +1,38 @@
+Bootstrap: shub
+From: coreyjadams/uboone_singularity:slf7-mpich
+
+%help
+SLF7 with balsam built in.
+Also comes with a little bit of extra software to make building
+and running larsoft from source easier.
+
+
+To start your container simply try
+singularity exec THIS_CONTAINER.simg bash
+
+
+%labels
+Maintainer coreyjadams
+Version fnal-wn-sl7-balsam
+
+#------------
+# Global installation
+#------------
+%environment
+
+%post
+    
+    # Make sure mpich is available:
+    export PATH=$PATH:/mpich/install/bin
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mpich/install/lib
+
+    # For balsam
+    pip3 install mpi4py
+
+    # For balsam
+    pip3 install django
+
+	## Install balsam:
+    git clone https://github.com/coreyjadams/balsam.git
+    cd balsam/
+    python3 setup.py install
